@@ -1,0 +1,80 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Poop</title>
+  <link rel="stylesheet" type="text/css" href="/foundation/css/foundation.css">
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  <script src="/modernizr/modernizr.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <div class="off-canvas-wrap">
+    <div class="inner-wrap">
+      <nav class="tab-bar">
+        <section class="left-small">
+          <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+        </section>
+      </nav>
+      <aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        <li><label>Motion Data</label></li>
+        <li class="active"><a href="#">Orientation</a></li>
+        <li><a href="#">Turning</a></li>
+        <li><a href="#">Accellerometer</a></li>
+      </ul>
+    </aside>
+      <section class="main-section hide-for-touch">
+        <div class="panel">
+          <h1>Orien Data: <span id="orien"></span></h1>
+          <h1 class="hide">Turn Data: <span id="datum"></span></h1>
+        </div>
+      </section>
+      <section class="main-section show-for-touch">
+        <div class="panel">
+          <h1>EPIC</h1>
+          <h2>???</h2>
+        </div>
+      </section>
+      <a class="exit-off-canvas"></a>
+    </div>
+  </div>
+  <script>
+  io = io.connect();
+
+  io.emit('lobby', function(data) {
+    alert('welcome to the lobby!')
+  })
+  //var datum = document.getElementById('datum');
+  io.on('phoneM', function(data) {
+    console.log(data.interval);
+    $('#datum').html("<br>alpha: " + data.alpha + "<br>beta: " + data.beta + "<br>gamma: " + data.gamma);
+  });
+  io.on('phoneO', function(data) {
+    $('#orien').html("<br>alpha: " + data.alpha + "<br>beta: " + data.beta + "<br>gamma: " + data.gamma);
+  });
+
+  window.addEventListener('deviceorientation', function(event) {
+      io.emit('orientation',{alpha: event.alpha.toFixed(2), beta: event.beta.toFixed(2), gamma: event.gamma.toFixed(2)});
+    }, false);
+
+  window.addEventListener('devicemotion', function(event) {  
+    var acceleration = event.accelerationIncludingGravity; 
+    var motion = event.rotationRate;
+    
+      io.emit('motion',{interval: event.interval, x: acceleration.x.toFixed(2), y: acceleration.y.toFixed(2), z: acceleration.z.toFixed(2), alpha: motion.alpha, beta: motion.beta, gamma: motion.gamma}); 
+    
+  }, false);
+
+
+  </script>
+    <script src="/jquery/jquery.js"></script>
+    <script src="/foundation/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      $(document).on('click', 'li', function() {
+        $('h1').addClass('hide');
+      })
+    </script>
+</body>
+</html>

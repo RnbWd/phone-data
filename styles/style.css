@@ -1,0 +1,11 @@
+section {
+  height: 100%;
+}
+@media only screen and (max-width: 40em) { 
+  body {
+    margin-top: 18px;
+  }
+}
+.panel {
+  height: 50%;
+}
