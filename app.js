@@ -13,13 +13,13 @@ app = express().http().io();
       rooms: app.io.sockets.manager.rooms
     });
   });
-  app.io.route('motion', function(req) {
-    for (var key in req.io.manager.roomClients[req.io.socket.id]) {
-      if (key != '') {
-        req.io.room(key.slice(1)).broadcast('phoneM',req.data);
-      }
-    }
-  });
+  // app.io.route('motion', function(req) {
+  //   for (var key in req.io.manager.roomClients[req.io.socket.id]) {
+  //     if (key != '') {
+  //       req.io.room(key.slice(1)).broadcast('phoneM', req.data);
+  //     }
+  //   }
+  // });
 
   app.io.route('orientation', function(req) {
     for (var key in req.io.manager.roomClients[req.io.socket.id]) {
