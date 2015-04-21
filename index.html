@@ -1,8 +1,8 @@
 <html>
 <head>
-  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <title>Poop</title>
+  <title>Phone Orientation</title>
   <link rel="stylesheet" type="text/css" href="/foundation/css/foundation.css">
   <link rel="stylesheet" type="text/css" href="/style.css">
   <script src="/modernizr/modernizr.js"></script>
@@ -12,24 +12,16 @@
   <div class="off-canvas-wrap">
     <div class="inner-wrap">
       <nav class="tab-bar">
-        <section class="left-small">
+    <!--     <section class="left-small">
           <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
-        </section>
+        </section> -->
 
         <section class="middle tab-bar-section">
-          <h1 class="title">Phone Sensors</h1>
+          <h1 class="title">Phone Orientation</h1>
         </section>
 
       </nav>
-      <aside class="left-off-canvas-menu">
-      <ul class="off-canvas-list">
-        <li><label>Motion Data</label></li>
-        <li name="orien"><a href="#">Orientation</a></li>
-        <li name="rotat"><a href="#">Rotation</a></li>
-        <li name="accel"><a href="#">Accellerometer</a></li>
-      </ul>
-    </aside>
-      <section class="main-section hide-for-touch">
+      <section class="main-section">
 
         <div id="orien" class="panel active">
           <h2>Orientation</h2>
@@ -50,10 +42,10 @@
               </tr>
             </tbody>
           </table>
-          
+
         </div>
 
-        <div id="rotat" class="panel hide">
+        <!-- <div id="rotat" class="panel hide">
           <h2>Rotation</h2>
           <hr />
           <table id="rotation">
@@ -72,7 +64,7 @@
               </tr>
             </tbody>
           </table>
-          
+
         </div>
         <div id="accel" class="panel hide">
           <h2>Acceleration</h2>
@@ -94,13 +86,7 @@
             </tbody>
           </table>
 
-        </div>
-      </section>
-      <section class="main-section show-for-touch">
-        <div class="panel">
-          <h1>EPIC</h1>
-          <h2>???</h2>
-        </div>
+        </div> -->
       </section>
       <a class="exit-off-canvas"></a>
     </div>
@@ -122,30 +108,33 @@
     $('#data1').html("<td>"+data.alpha + "</td><td>" + data.beta + "</td><td>" + data.gamma + "</td>");
   });
 
+  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+
   window.addEventListener('deviceorientation', function(event) {
       io.emit('orientation',{alpha: event.alpha.toFixed(2), beta: event.beta.toFixed(2), gamma: event.gamma.toFixed(2)});
     }, false);
 
- // window.addEventListener('devicemotion', function(event) {  
-    //var acceleration = event.accelerationIncludingGravity; 
-    //var motion = event.rotationRate;
-    
-      //io.emit('motion',{interval: event.interval, x: acceleration.x.toFixed(2), y: acceleration.y.toFixed(2), z: acceleration.z.toFixed(2), alpha: motion.alpha, beta: motion.beta, gamma: motion.gamma}); 
-    
-  //}, false);
+ window.addEventListener('devicemotion', function(event) {
+    var acceleration = event.accelerationIncludingGravity;
+    var motion = event.rotationRate;
 
+      io.emit('motion',{interval: event.interval, x: acceleration.x.toFixed(2), y: acceleration.y.toFixed(2), z: acceleration.z.toFixed(2), alpha: motion.alpha, beta: motion.beta, gamma: motion.gamma});
+
+  }, false);
+
+  }
 
   </script>
     <script src="/jquery/jquery.js"></script>
     <script src="/foundation/js/foundation.min.js"></script>
     <script>
       $(document).foundation();
-      $(document).on('click', 'li', function() {
-        var id = $(this).attr('name');
-        $('.active').removeClass('active').addClass('hide');
-        $('#'+id).toggleClass('hide').toggleClass('active');
+      // $(document).on('click', 'li', function() {
+      //   var id = $(this).attr('name');
+      //   $('.active').removeClass('active').addClass('hide');
+      //   $('#'+id).toggleClass('hide').toggleClass('active');
 
-      })
+      // })
     </script>
 </body>
 </html>
