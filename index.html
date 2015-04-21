@@ -99,30 +99,34 @@
   })
 
 
-  io.on('phoneM', function(data) {
-    console.log(data.interval);
-    $('#data3').html("<br>alpha: " + data.alpha + "<br>beta: " + data.beta + "<br>gamma: " + data.gamma);
-  });
+  // io.on('phoneM', function(data) {
+  //   console.log(data.interval);
+  //   $('#data3').html("<br>alpha: " + data.alpha + "<br>beta: " + data.beta + "<br>gamma: " + data.gamma);
+  // });
 
-  io.on('phoneO', function(data) {
-    $('#data1').html("<td>"+data.alpha + "</td><td>" + data.beta + "</td><td>" + data.gamma + "</td>");
-  });
+  io.on('phoneO', updateTable);
 
   if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 
   window.addEventListener('deviceorientation', function(event) {
-      io.emit('orientation',{alpha: event.alpha.toFixed(2), beta: event.beta.toFixed(2), gamma: event.gamma.toFixed(2)});
+    var data = {alpha: event.alpha.toFixed(2), beta: event.beta.toFixed(2), gamma: event.gamma.toFixed(2)};
+      updateTable(data);
+      io.emit('orientation', data);
     }, false);
-
- window.addEventListener('devicemotion', function(event) {
-    var acceleration = event.accelerationIncludingGravity;
-    var motion = event.rotationRate;
-
-      io.emit('motion',{interval: event.interval, x: acceleration.x.toFixed(2), y: acceleration.y.toFixed(2), z: acceleration.z.toFixed(2), alpha: motion.alpha, beta: motion.beta, gamma: motion.gamma});
-
-  }, false);
-
   }
+
+  function updateTable (data) {
+    $('#data1').html("<td>"+data.alpha + "</td><td>" + data.beta + "</td><td>" + data.gamma + "</td>");
+  }
+ // window.addEventListener('devicemotion', function(event) {
+ //    var acceleration = event.accelerationIncludingGravity;
+ //    var motion = event.rotationRate;
+
+ //      io.emit('motion',{interval: event.interval, x: acceleration.x.toFixed(2), y: acceleration.y.toFixed(2), z: acceleration.z.toFixed(2), alpha: motion.alpha, beta: motion.beta, gamma: motion.gamma});
+
+ //  }, false);
+
+
 
   </script>
     <script src="/jquery/jquery.js"></script>

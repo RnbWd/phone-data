@@ -1,5 +1,5 @@
-express = require('express.io');
-app = express().http().io();
+var express = require('express.io');
+var app = express().http().io();
   app.use(express.static(__dirname + '/styles'));
   app.use(express.static(__dirname + '/bower_components'));
   //send index.html page
@@ -24,7 +24,7 @@ app = express().http().io();
   app.io.route('orientation', function(req) {
     for (var key in req.io.manager.roomClients[req.io.socket.id]) {
       if (key != '') {
-        req.io.room(key.slice(1)).broadcast('phoneO',req.data);
+        req.io.room(key.slice(1)).broadcast('phoneO', req.data);
       }
     }
   });
